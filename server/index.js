@@ -3,13 +3,18 @@ const app = express();
 const ftpsrv = require('../server/ftp');
 
 let server_options = {
-    url : "ftp://127.0.0.1:80",
+    url : "ftp://127.0.0.1:21",
     greeting: "Connected to the FTP server ... ",
     anonymous: true
 };
 
 const ftp_server = new ftpsrv(server_options);
 ftp_server.start();
+
+ftp_server.server.on('login',()=>{
+    console.log('Connected !');
+})
+
 ftp_server.server.on('client-error',({connection, context, error})=>{
     console.log('Client error');
 });
